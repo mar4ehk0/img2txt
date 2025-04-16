@@ -1,0 +1,10 @@
+# app
+/app/vendor
+/app/.env
+/app/*.lst
+
+docker/.env
+
+# ide
+.idea
+.vscode

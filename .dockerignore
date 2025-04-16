@@ -1,0 +1,6 @@
+/app/vendor
+/app/tests
+/app/phpunit.xml
+/app/phpstan.dist.neon
+/app/.php-cs-fixer.php
+/app/.phpcs.xml

@@ -1,0 +1,70 @@
+version: "3.9"
+
+services:
+    app_backend:
+        container_name: ${APP_CONTAINER_NAME}
+        hostname: ${APP_HOSTNAME}
+        restart: always
+        working_dir: ${SRC_PATH}
+        build:
+            context: .
+            dockerfile: php/development/Dockerfile
+            args:
+                - "UID"
+                - "GID"
+                - "USER_NAME"
+                - "SRC_PATH"
+        environment:
+            UID: ${UID}
+            GID: ${GID}
+            USER_NAME: ${USER_NAME}
+            RDMS_DB_NAME: ${RDMS_DB_NAME}
+            RDMS_DB_PASSWORD: ${RDMS_DB_PASSWORD}
+            RDMS_DB_USER: ${RDMS_DB_USER}
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+        depends_on:
+            - database
+        volumes:
+            - ../app:${SRC_PATH}
+            - ./php/development/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+            - ./php/development/date.ini:/usr/local/etc/php/conf.d/date.ini
+            - ./php/development/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+
+    nginx:
+        container_name: ${NGINX_CONTAINER_NAME}
+        hostname: ${NGINX_HOSTNAME}
+        build:
+            context: .
+            dockerfile: nginx/Dockerfile
+            args:
+                - "DOMAIN"
+                - "SRC_PATH"
+                - "PUBLIC_PATH"
+        depends_on:
+            - app_backend
+        volumes:
+            - ../app:${SRC_PATH}
+        ports:
+            - "80:80"
+
+    database:
+        container_name: ${RDMS_CONTAINER_NAME}
+        hostname: ${RDMS_HOSTNAME}
+        image: postgres:17-alpine
+        environment:
+            POSTGRES_DB: ${RDMS_DB_NAME}
+            POSTGRES_PASSWORD: ${RDMS_DB_PASSWORD}
+            POSTGRES_USER: ${RDMS_DB_USER}
+        healthcheck:
+            test: ["CMD", "pg_isready", "-d", "${RDMS_DB_NAME}", "-U", "${RDMS_DB_USER}"]
+            timeout: 5s
+            retries: 5
+            start_period: 60s
+        ports:
+            - "5432:5432"
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+
+volumes:
+    postgres_data:
