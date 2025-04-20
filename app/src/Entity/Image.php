@@ -3,19 +3,33 @@
 namespace App\Entity;
 
 use DateTimeImmutable;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\Table;
+use Symfony\Bridge\Doctrine\Types\UlidType;
+use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Uid\Uuid;
+use Doctrine\ORM\Mapping as ORM;
 
+#[Entity()]
+#[Table(name: 'images')]
 class Image
 {
-
-    private Uuid $id;
+    #[ORM\Id]
+    #[ORM\Column(type: UlidType::NAME, unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: 'doctrine.ulid_generator')]
+    private Ulid $id;
+    #[ORM\Column(type: 'string')]
     private string $name;
+    #[ORM\Column(type: 'string')]
     private string $path;
+    #[ORM\Column(type: 'datetime_immutable')]
     private DateTimeImmutable $createdAt;
+    #[ORM\Column(type: 'datetime_immutable')]
     private DateTimeImmutable $updatedAt;
 
     public function __construct(
-        Uuid $id,
+        Ulid $id,
         string $name,
         string $path,
         DateTimeImmutable $createdAt,
@@ -29,7 +43,7 @@ class Image
         $this->updatedAt = $updatedAt;
     }
 
-    public function getId(): Uuid
+    public function getId(): Ulid
     {
         return $this->id;
     }
