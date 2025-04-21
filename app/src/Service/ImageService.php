@@ -6,7 +6,6 @@ use App\Entity\Image;
 use App\Repository\ImageRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Uid\Factory\UlidFactory;
 
@@ -47,8 +46,15 @@ class ImageService
 
     private function createFilePath(string $newFileName, string $extension): string
     {
+        $datePath = date('Y/m/d');
+        $fullPath = rtrim($this->fileStorage, '/') . '/' . $datePath;
+
+        if (!is_dir($fullPath)) {
+            mkdir($fullPath, 0777, true);
+        }
+
         // 2025/04/16
-        return sprintf('%s/%s.%s', $this->fileStorage, $newFileName, $extension);
+        return sprintf('%s/%s.%s', $fullPath, $newFileName, $extension);
     }
 
 }
