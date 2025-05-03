@@ -1,0 +1,9 @@
+{
+  // @see how create AIM TOKEN https://yandex.cloud/ru/docs/vision/operations/ocr/text-detection-image#service-account_1
+  "id": "id",
+  "service_account_id": "service_account_id",
+  "created_at": "2025-05-03T08:16:24.760445513Z",
+  "key_algorithm": "RSA_2048",
+  "public_key": "value_public_key", // @see yandex AIM
+  "private_key": "value_private_key" // @see yandex AIM
+}

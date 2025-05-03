@@ -2,6 +2,9 @@
 /app/vendor
 /app/.env
 /app/*.lst
+/app/config/yandex_ocr/authorized_key.json
+/app/config/yandex_ocr/jwt_token.json
+/app/public/file_storage
 
 docker/.env
 

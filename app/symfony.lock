@@ -91,5 +91,8 @@
             "version": "7.0",
             "ref": "0df5844274d871b37fc3816c57a768ffc60a43a5"
         }
+    },
+    "web-token/jwt-framework": {
+        "version": "4.0.4"
     }
 }
