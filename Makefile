@@ -33,7 +33,7 @@ start_development: ## Start development containers
 
 .PHONY: stop_development
 stop_development: ## Stop development containers
-	${DOCKER_COMPOSE} down -v --remove-orphans
+	${DOCKER_COMPOSE} down --remove-orphans
 
 .PHONY: docker_compose_up_development
 docker_compose_up_development:
