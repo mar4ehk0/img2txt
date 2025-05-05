@@ -2,7 +2,7 @@
 
 namespace App\Client;
 
-use App\Provider\TokenProvider;
+use App\Provider\IAMTokenFileProvider;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 
@@ -10,10 +10,9 @@ class YandexOCRHTTPClient
 {
     public function __construct(
         private HttpClientInterface $client,
-        private TokenProvider       $tokenProvider,
+        private IAMTokenFileProvider       $tokenProvider,
         private string              $urlYandexOCR
-    )
-    {
+    ) {
 
     }
 

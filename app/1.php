@@ -12,7 +12,7 @@ use Jose\Component\Signature\JWSBuilder;
 use Jose\Component\Signature\Serializer\CompactSerializer;
 
 // Чтение данных из файла
-$keyData = json_decode(file_get_contents("./config/authorized_key.json"), true);
+$keyData = json_decode(file_get_contents("./config/yandex_ocr/authorized_key.json"), true);
 $privateKeyPem = $keyData['private_key'];
 $keyId = $keyData['id'];
 $serviceAccountId = $keyData['service_account_id'];
