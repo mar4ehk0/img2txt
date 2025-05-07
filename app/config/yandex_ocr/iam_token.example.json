@@ -1,0 +1,3 @@
+{
+    "IAMToken": "value-iamToken" //see https://yandex.cloud/ru/docs/iam/operations/iam-token/create-for-sa#get-iam-token
+}

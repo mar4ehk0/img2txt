@@ -20,9 +20,9 @@ class TextRecognizer
     public function handle(UploadedFile $file): void
     {
         try {
-            $img = $this->imageService->upload($file);
+            $image = $this->imageService->upload($file);
 
-            $this->ocrService->recognize($img);
+            $this->ocrService->recognize($image);
         } catch (UploadFileException $e) {
 
         }

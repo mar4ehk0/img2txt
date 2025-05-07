@@ -7,20 +7,20 @@
         "php": ">=8.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "doctrine/dbal": "^3",
+        "doctrine/dbal": "^3.9.4",
         "doctrine/doctrine-bundle": "^2.14",
-        "doctrine/doctrine-migrations-bundle": "^3.4",
-        "doctrine/orm": "^3.3",
+        "doctrine/doctrine-migrations-bundle": "^3.4.1",
+        "doctrine/orm": "^3.3.3",
         "symfony/clock": "7.2.*",
         "symfony/console": "7.2.*",
         "symfony/dotenv": "7.2.*",
-        "symfony/flex": "^2",
+        "symfony/flex": "^2.5",
         "symfony/framework-bundle": "7.2.*",
         "symfony/http-client": "7.2.*",
         "symfony/runtime": "7.2.*",
         "symfony/uid": "7.2.*",
         "symfony/yaml": "7.2.*",
-        "web-token/jwt-framework": "*"
+        "web-token/jwt-framework": ">=4.0.4"
     },
     "config": {
         "allow-plugins": {
