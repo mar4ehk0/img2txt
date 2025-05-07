@@ -41,7 +41,6 @@ class YandexOCRHTTPClient
 
         $content = $response->getContent();
         $content = json_decode($content, true);
-
         try {
             $result = $this->contentProcessing($content);
         } catch (YandexOCRHttpClientException $e) {
@@ -56,29 +55,30 @@ class YandexOCRHTTPClient
         $texts = [];
 
         if (
-            !isset($content['result']['text_annotation']['blocks']) ||
-            !is_array($content['result']['text_annotation']['blocks'])
+            !isset($content['result']['textAnnotation']['blocks']) ||
+            !is_array($content['result']['textAnnotation']['blocks'])
         ) {
             throw YandexOCRHttpClientException::missingBlocks();
         }
 
-        foreach ($content['result']['text_annotation']['blocks'] as $blockIndex => $block) {
+        foreach ($content['result']['textAnnotation']['blocks'] as $blockIndex => $block) {
             if (!isset($block['lines']) || !is_array($block['lines'])) {
                 throw YandexOCRHttpClientException::missingLines($blockIndex);
-                }
+            }
 
             foreach ($block['lines'] as $lineIndex => $line) {
                 if (
-                    !isset($line['alternatives'][0]['text']) ||
-                    !is_string($line['alternatives'][0]['text']) ||
-                    empty($line['alternatives'][0]['text'])
+                    !isset($line['text']) ||
+                    !is_string($line['text']) ||
+                    empty(trim($line['text']))
                 ) {
                     throw YandexOCRHttpClientException::missingAlternativeText($blockIndex, $lineIndex);
                 }
 
-                $texts[] = trim($line['alternatives'][0]['text']);
+                $texts[] = trim($line['text']);
             }
         }
+
 
 
         $resultText = implode(' ', $texts);
