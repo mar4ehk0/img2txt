@@ -2,6 +2,7 @@
 
 namespace App\Client;
 
+use App\Exception\YandexOCRHttpClientException;
 use App\Interface\TokenFileProviderInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -41,18 +42,48 @@ class YandexOCRHTTPClient
         $content = $response->getContent();
         $content = json_decode($content, true);
 
+        try {
+            $result = $this->contentProcessing($content);
+        } catch (YandexOCRHttpClientException $e) {
+            throw $e;
+        }
 
+        return $result;
+    }
+
+    private function contentProcessing($content)
+    {
         $texts = [];
-        foreach ($content['result']['text_annotation']['blocks'] as $block) {
-            foreach ($block['lines'] as $line) {
-                if (!empty($line['alternatives'][0]['text'])) {
-                    $texts[] = $line['alternatives'][0]['text'];
+
+        if (
+            !isset($content['result']['text_annotation']['blocks']) ||
+            !is_array($content['result']['text_annotation']['blocks'])
+        ) {
+            throw YandexOCRHttpClientException::missingBlocks();
+        }
+
+        foreach ($content['result']['text_annotation']['blocks'] as $blockIndex => $block) {
+            if (!isset($block['lines']) || !is_array($block['lines'])) {
+                throw YandexOCRHttpClientException::missingLines($blockIndex);
                 }
+
+            foreach ($block['lines'] as $lineIndex => $line) {
+                if (
+                    !isset($line['alternatives'][0]['text']) ||
+                    !is_string($line['alternatives'][0]['text']) ||
+                    empty($line['alternatives'][0]['text'])
+                ) {
+                    throw YandexOCRHttpClientException::missingAlternativeText($blockIndex, $lineIndex);
+                }
+
+                $texts[] = trim($line['alternatives'][0]['text']);
             }
         }
+
+
         $resultText = implode(' ', $texts);
 
-
-        return !empty($resultText) ? $resultText : null;
+        return $resultText;
     }
 }
+

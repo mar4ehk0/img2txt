@@ -3,27 +3,29 @@
 namespace App\Command;
 
 use App\Client\YandexIAMHTTPClient;
+use App\Exception\YandexIAMClientException;
 use Jose\Component\Core\AlgorithmManager;
 use Jose\Component\KeyManagement\JWKFactory;
 use Jose\Component\Signature\Algorithm\PS256;
 use Jose\Component\Signature\JWSBuilder;
 use Jose\Component\Signature\Serializer\CompactSerializer;
-use JsonException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Psr\Log\LoggerInterface;
 
 
 #[AsCommand(name: 'ocr:generate-iam')]
+
 class GenerateYandexIAM extends Command
 {
-
     public function __construct(
         protected YandexIAMHTTPClient $client,
         private string $pathToYandexAuthorizedKey,
         private string $pathToIAMFile,
-        private string $urlYandexIAM
+        private string $urlYandexIAM,
+        private LoggerInterface $logger,
     ) {
         $name = 'ocr:generate-iam';
         parent::__construct($name);
@@ -35,20 +37,22 @@ class GenerateYandexIAM extends Command
 
         try {
             $iamToken = $this->client->request($jwt);
-        } catch (JsonException $e) { // добавить обработку исключения app/src/Client/YandexIAMHTTPClient.php:36
-            // добавить logger->error
+        } catch (YandexIAMClientException $e) {
+            $this->logger->error('Error when requesting an IAM token: ' . $e->getMessage());
+            $output->writeln('<error>Failed to get the IAM token</error>');
             return Command::FAILURE;
         }
 
-
-        file_put_contents(
-            $this->pathToIAMFile,
-            json_encode(['IAMToken' => $iamToken], JSON_PRETTY_PRINT)
-        );
+        if (file_put_contents(
+                $this->pathToIAMFile,
+                json_encode(['IAMToken' => $iamToken], JSON_PRETTY_PRINT)
+            ) === false) {
+            $this->logger->error('Не удалось сохранить IAM токен в файл: ' . $this->pathToIAMFile);
+            throw YandexIAMClientException::failedToWriteIAMFile($this->pathToIAMFile);
+        }
 
 
         $output->writeln('Generated Token');
-
         return Command::SUCCESS;
     }
 
