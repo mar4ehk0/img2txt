@@ -18,8 +18,8 @@ services:
         bind:
           $fileStorage: '%path_to_file_storage%'
           $pathToIAMFile: '%path_to_iam_file%'
-          $urlYandexOCR: 'env(string:URL_YANDEX_OCR)'
-          $urlYandexIAM: 'env(string:URL_YANDEX_IAM)'
+          $urlYandexOCR: '%env(string:URL_YANDEX_OCR)%'
+          $urlYandexIAM: '%env(string:URL_YANDEX_IAM)%'
           $pathToYandexAuthorizedKey: '%path_to_authorized_key%'
 
     # makes classes in src/ available to be used as services

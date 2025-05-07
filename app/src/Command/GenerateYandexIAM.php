@@ -21,7 +21,9 @@ class GenerateYandexIAM extends Command
 
     public function __construct(
         protected YandexIAMHTTPClient $client,
-        private string $pathToYandexAuthorizedKey
+        private string $pathToYandexAuthorizedKey,
+        private string $pathToIAMFile,
+        private string $urlYandexIAM
     ) {
         $name = 'ocr:generate-iam';
         parent::__construct($name);
@@ -38,7 +40,12 @@ class GenerateYandexIAM extends Command
             return Command::FAILURE;
         }
 
-        // $iamToken записать в файл app/config/yandex_ocr/iam_token.example.json
+
+        file_put_contents(
+            $this->pathToIAMFile,
+            json_encode(['IAMToken' => $iamToken], JSON_PRETTY_PRINT)
+        );
+
 
         $output->writeln('Generated Token');
 
@@ -71,7 +78,7 @@ class GenerateYandexIAM extends Command
 
         $payload = json_encode([
             'iss' => $serviceAccountId,
-            'aud' => "https://iam.api.cloud.yandex.net/iam/v1/tokens",
+            'aud' => $this->urlYandexIAM,
             'iat' => time(),
             'nbf' => time(),
             'exp' => time() + 3600,

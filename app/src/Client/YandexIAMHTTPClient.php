@@ -2,7 +2,7 @@
 
 namespace App\Client;
 
-use App\Provider\IAMTokenFileProvider;
+use App\Exception\IAMTokenException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 
@@ -33,7 +33,7 @@ class YandexIAMHTTPClient
         $content = json_decode($content, true);
 
         if (empty($content['iamToken'])) {
-            // throw exception
+            throw IamTokenException::tokenNotFound();
         }
 
         return $content['iamToken'];

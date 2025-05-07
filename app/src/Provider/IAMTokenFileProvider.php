@@ -2,19 +2,21 @@
 
 namespace App\Provider;
 
-class IAMTokenFileProvider
+use App\Interface\TokenFileProviderInterface;
+
+class IAMTokenFileProvider implements TokenFileProviderInterface
 {
     public function __construct(
         private string $pathToIAMFile
     ) {
     }
 
-    public function getToken(): string // сделай интерфейс для данного метода
+    public function getToken(): string
     {
 
         $json = json_decode(file_get_contents($this->pathToIAMFile), true);
-        $token = $json['token'] ?? null;
+        $iamToken = $json['iamToken'] ?? null;
 
-        return $token;
+        return $iamToken;
     }
 }

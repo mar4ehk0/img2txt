@@ -2,7 +2,7 @@
 
 namespace App\Client;
 
-use App\Provider\IAMTokenFileProvider;
+use App\Interface\TokenFileProviderInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 
@@ -10,16 +10,16 @@ class YandexOCRHTTPClient
 {
     public function __construct(
         private HttpClientInterface $client,
-        private IAMTokenFileProvider       $tokenProvider,
-        private string              $urlYandexOCR
-    ) {
-
+        private TokenFileProviderInterface $IAMTokenProvider,
+        private string $urlYandexOCR
+    )
+    {
     }
 
 
     public function request(string $imagePath): ?string
     {
-        $token = $this->tokenProvider->getToken();
+        $IAMToken = $this->IAMTokenProvider->getToken();
 
         $response = $this->client->request(
             'POST',
@@ -27,7 +27,7 @@ class YandexOCRHTTPClient
             [
                 'headers' => [
                     'Content-Type' => 'application/json',
-                    'Authorization' => 'Bearer ' . $token
+                    'Authorization' => 'Bearer '.$IAMToken,
                 ],
                 'body' => json_encode([
                     "mimeType" => "JPEG",
@@ -35,7 +35,8 @@ class YandexOCRHTTPClient
                     "model" => "page",
                     "content" => base64_encode(file_get_contents($imagePath)),
                 ]),
-            ]);
+            ]
+        );
 
         $content = $response->getContent();
         $content = json_decode($content, true);
