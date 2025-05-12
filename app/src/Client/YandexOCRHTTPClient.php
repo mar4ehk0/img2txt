@@ -2,9 +2,12 @@
 
 namespace App\Client;
 
+use App\Exception\YandexIAMClientException;
 use App\Exception\YandexOCRHttpClientException;
 use App\Interface\TokenFileProviderInterface;
+use JsonException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Throwable;
 
 
 class YandexOCRHTTPClient
@@ -20,30 +23,30 @@ class YandexOCRHTTPClient
 
     public function request(string $imagePath): ?string
     {
-        $IAMToken = $this->IAMTokenProvider->getToken();
-
-        $response = $this->client->request(
-            'POST',
-            $this->urlYandexOCR,
-            [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                    'Authorization' => 'Bearer '.$IAMToken,
-                ],
-                'body' => json_encode([
-                    "mimeType" => "JPEG",
-                    "languageCodes" => ["*"],
-                    "model" => "page",
-                    "content" => base64_encode(file_get_contents($imagePath)),
-                ]),
-            ]
-        );
-
-        $content = $response->getContent();
-        $content = json_decode($content, true);
         try {
+            $IAMToken = $this->IAMTokenProvider->getToken();
+            $response = $this->client->request(
+                'POST',
+                $this->urlYandexOCR,
+                [
+                    'headers' => [
+                        'Content-Type' => 'application/json',
+                        'Authorization' => 'Bearer '.$IAMToken,
+                    ],
+                    'body' => json_encode([
+                        "mimeType" => "JPEG",
+                        "languageCodes" => ["*"],
+                        "model" => "page",
+                        "content" => base64_encode(file_get_contents($imagePath)),
+                    ]),
+                ]
+            );
+
+            $content = $response->getContent();
+            $content = json_decode($content, true);
+
             $result = $this->contentProcessing($content);
-        } catch (YandexOCRHttpClientException $e) {
+        } catch (Throwable $e) {
             throw $e;
         }
 
@@ -54,6 +57,8 @@ class YandexOCRHTTPClient
     {
         $texts = [];
 
+        // TODO - переписать вынести в метод validateContent,
+        // сделать проверку каждого элемента isset($content['result'])
         if (
             !isset($content['result']['textAnnotation']['blocks']) ||
             !is_array($content['result']['textAnnotation']['blocks'])

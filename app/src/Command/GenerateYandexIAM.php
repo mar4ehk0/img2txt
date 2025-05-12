@@ -17,7 +17,6 @@ use Psr\Log\LoggerInterface;
 
 
 #[AsCommand(name: 'ocr:generate-iam')]
-
 class GenerateYandexIAM extends Command
 {
     public function __construct(
@@ -43,10 +42,11 @@ class GenerateYandexIAM extends Command
             return Command::FAILURE;
         }
 
-        if (file_put_contents(
-                $this->pathToIAMFile,
-                json_encode(['IAMToken' => $iamToken], JSON_PRETTY_PRINT)
-            ) === false) {
+        $result = file_put_contents(
+            $this->pathToIAMFile,
+            json_encode(['IAMToken' => $iamToken], JSON_PRETTY_PRINT)
+        );
+        if ($result === false) {
             $this->logger->error('Не удалось сохранить IAM токен в файл: ' . $this->pathToIAMFile);
             throw YandexIAMClientException::failedToWriteIAMFile($this->pathToIAMFile);
         }

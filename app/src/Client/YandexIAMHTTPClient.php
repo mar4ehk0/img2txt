@@ -49,6 +49,7 @@ class YandexIAMHTTPClient
         RedirectionExceptionInterface |
         JsonException |
         \Throwable $e){
+            // оставить только Throwable
             throw YandexIAMClientException::requestFailed($e->getMessage());
         }
         return $content['iamToken'];

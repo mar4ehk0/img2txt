@@ -1,6 +1,6 @@
 <?php
 
-namespace App\UseCase;
+namespace App\UseCase\TextRecognizer;
 
 use App\Exception\UploadFileException;
 use App\Service\ImageService;
@@ -17,16 +17,24 @@ class TextRecognizer
     ) {
     }
 
-    public function handle(UploadedFile $file): void
+    public function handle(UploadedFile $file): TextRecognizerResultDto
     {
         try {
             $image = $this->imageService->upload($file);
 
-            $this->ocrService->recognize($image);
+            $text = $this->ocrService->recognize($image);
         } catch (UploadFileException $e) {
-
+            // залогировать ошибку и выкинуть исключение
         }
 
-//        $this->entityManager->flush();
+        $dto = new TextRecognizerResultDto(
+            $image->getId(),
+            $text->getId(),
+            $text->getText(),
+        );
+
+        $this->entityManager->flush();
+
+        return $dto;
     }
 }
