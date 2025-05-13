@@ -1,5 +1,7 @@
 {
     "type": "project",
+    "name": "some_project/image_to_text",
+    "description": "recognize text from image",
     "license": "proprietary",
     "minimum-stability": "stable",
     "prefer-stable": true,
@@ -9,18 +11,18 @@
         "ext-iconv": "*",
         "doctrine/dbal": "^3.9.4",
         "doctrine/doctrine-bundle": "^2.14",
-        "doctrine/doctrine-migrations-bundle": "^3.4.1",
+        "doctrine/doctrine-migrations-bundle": "^3.4.2",
         "doctrine/orm": "^3.3.3",
         "symfony/clock": "7.2.*",
         "symfony/console": "7.2.*",
         "symfony/dotenv": "7.2.*",
-        "symfony/flex": "^2.5",
+        "symfony/flex": "^2.5.1",
         "symfony/framework-bundle": "7.2.*",
         "symfony/http-client": "7.2.*",
         "symfony/runtime": "7.2.*",
         "symfony/uid": "7.2.*",
         "symfony/yaml": "7.2.*",
-        "web-token/jwt-framework": ">=4.0.4"
+        "web-token/jwt-framework": "^4.0.4"
     },
     "config": {
         "allow-plugins": {
