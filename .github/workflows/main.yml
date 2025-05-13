@@ -10,22 +10,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Set up PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.3'
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
 
-    - name: Create .env file
-      working-directory: ./app
-      run: cp .env.example .env
+      - name: Create .env file
+        working-directory: ./app
+        run: cp .env.example .env
 
-    - name: Validate composer.json and composer.lock
-      working-directory: ./app
-      run: composer validate --strict
+      - name: Validate composer.json and composer.lock
+        working-directory: ./app
+        run: composer validate --strict
 
-    - name: Install dependencies
-      working-directory: ./app
-      run: composer install --prefer-dist --no-progress
+      - name: Install dependencies
+        working-directory: ./app
+        run: composer install --prefer-dist --no-progress
+
+  php-cs-fixer:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run PHP CS Fixer
+        uses: docker://ghcr.io/php-cs-fixer/php-cs-fixer:3-php8.3
+        working-directory: ./app
+        with:
+          args: --config=.php-cs-fixer.dist.php check
 
