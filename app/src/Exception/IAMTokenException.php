@@ -2,9 +2,7 @@
 
 namespace App\Exception;
 
-use Exception;
-
-class IAMTokenException extends Exception
+class IAMTokenException extends \Exception
 {
     public static function tokenNotFound(): self
     {

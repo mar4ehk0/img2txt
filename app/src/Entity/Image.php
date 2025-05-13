@@ -2,12 +2,11 @@
 
 namespace App\Entity;
 
-use DateTimeImmutable;
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Table;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
-use Doctrine\ORM\Mapping as ORM;
 
 #[Entity()]
 #[Table(name: 'images')]
@@ -23,18 +22,17 @@ class Image
     #[ORM\Column(type: 'string')]
     private string $path;
     #[ORM\Column(type: 'datetime_immutable')]
-    private DateTimeImmutable $createdAt;
+    private \DateTimeImmutable $createdAt;
     #[ORM\Column(type: 'datetime_immutable')]
-    private DateTimeImmutable $updatedAt;
+    private \DateTimeImmutable $updatedAt;
 
     public function __construct(
         Ulid $id,
         string $name,
         string $path,
-        DateTimeImmutable $createdAt,
-        DateTimeImmutable $updatedAt
-    )
-    {
+        \DateTimeImmutable $createdAt,
+        \DateTimeImmutable $updatedAt,
+    ) {
         $this->id = $id;
         $this->name = $name;
         $this->path = $path;
@@ -57,17 +55,17 @@ class Image
         return $this->path;
     }
 
-    public function getCreatedAt(): DateTimeImmutable
+    public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    public function getUpdatedAt(): DateTimeImmutable
+    public function getUpdatedAt(): \DateTimeImmutable
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(DateTimeImmutable $updatedAt): void
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }

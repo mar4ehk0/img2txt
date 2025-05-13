@@ -8,7 +8,7 @@ use App\Interface\TokenFileProviderInterface;
 class IAMTokenFileProvider implements TokenFileProviderInterface
 {
     public function __construct(
-        private string $pathToIAMFile
+        private string $pathToIAMFile,
     ) {
     }
 
