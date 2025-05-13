@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityRepository;
 class ImageRepository
 {
     private EntityRepository $repo;
+
     public function __construct(private EntityManagerInterface $entityManager)
     {
         $this->repo = $this->entityManager->getRepository(Image::class);

@@ -2,9 +2,7 @@
 
 namespace App\Exception;
 
-use Exception;
-
-final class YandexOCRHttpClientException extends Exception
+final class YandexOCRHttpClientException extends \Exception
 {
     private function __construct(string $message)
     {

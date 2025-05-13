@@ -2,21 +2,18 @@
 
 namespace App\Controller;
 
-use App\Exception\UploadFileException;
 use App\UseCase\TextRecognizer;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
-use Throwable;
 
 class ImageController extends BaseController
 {
-
     public function __construct(
         private readonly TextRecognizer $recognizer,
-        private readonly LoggerInterface $logger
+        private readonly LoggerInterface $logger,
     ) {
     }
 
@@ -29,13 +26,13 @@ class ImageController extends BaseController
         $uploadedFile = $request->files->get('image');
         try {
             $this->recognizer->handle($uploadedFile);
-        } catch (Throwable $exception) {
+        } catch (\Throwable $exception) {
             var_dump($exception->getMessage());
 
             $this->logger->error($exception->getMessage());
             $msg = 'Something went wrong';
         }
 
-        return new JSONResponse($msg);
+        return new JsonResponse($msg);
     }
 }

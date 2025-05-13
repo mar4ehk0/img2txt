@@ -5,13 +5,11 @@ namespace App\Service;
 use App\Entity\Image;
 use App\Exception\UploadFileException;
 use App\Repository\ImageRepository;
-use DateTimeImmutable;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Uid\Factory\UlidFactory;
 
 class ImageService
 {
-
     public function __construct(
         private readonly string $fileStorage,
         private UlidFactory $ulidFactory,
@@ -29,11 +27,10 @@ class ImageService
         $newFilePath = $this->createFilePath($id->toString(), $extension);
 
         if (!move_uploaded_file($file->getPathname(), $newFilePath)) {
-
             throw UploadFileException::createMoveUpload($file->getPathname(), $newFilePath);
         }
 
-        $now = new DateTimeImmutable();
+        $now = new \DateTimeImmutable();
 
         $entity = new Image(
             $id,
@@ -53,7 +50,7 @@ class ImageService
     private function createFilePath(string $newFileName, string $extension): string
     {
         $datePath = date('Y/m/d');
-        $fullPath = rtrim($this->fileStorage, '/') . '/' . $datePath;
+        $fullPath = rtrim($this->fileStorage, '/').'/'.$datePath;
 
         if (!is_dir($fullPath)) {
             if (!mkdir($fullPath, 0777, true) && !is_dir($fullPath)) {
@@ -63,5 +60,4 @@ class ImageService
 
         return sprintf('%s/%s.%s', $fullPath, $newFileName, $extension);
     }
-
 }
