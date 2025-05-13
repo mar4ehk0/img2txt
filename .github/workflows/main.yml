@@ -37,7 +37,6 @@ jobs:
 
       - name: Run PHP CS Fixer
         uses: docker://ghcr.io/php-cs-fixer/php-cs-fixer:3-php8.3
-        working-directory: ./app
         with:
           args: --config=.php-cs-fixer.dist.php check
 
