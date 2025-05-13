@@ -38,5 +38,5 @@ jobs:
       - name: Run PHP CS Fixer
         uses: docker://ghcr.io/php-cs-fixer/php-cs-fixer:3-php8.3
         with:
-          args: fix app/src --config=.php-cs-fixer.dist.php --dry-run --diff
+          args: fix app/src --config=app/.php-cs-fixer.dist.php --dry-run --diff
 
