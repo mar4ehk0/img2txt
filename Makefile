@@ -74,5 +74,13 @@ else
 	@echo "/etc/hosts updated"
 endif
 
+.PHONY: cs-check
+cs-check: ## Checks Code Style PHP
+	docker exec -ti ${APP_CONTAINER_NAME} php ./vendor/bin/php-cs-fixer check src/ --diff
+
+.PHONY: cs-fix
+cs-fix: ## Fixes Code Style PHP
+	docker exec -ti ${APP_CONTAINER_NAME} php ./vendor/bin/php-cs-fixer fix src/ --diff
+
 # Global
 .DEFAULT_GOAL := help
