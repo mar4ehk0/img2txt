@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 class TextSearchHandler
 {
     public function __construct(
-        private TextRepository $textRepository
+        private TextRepository $textRepository,
     ) {
     }
 

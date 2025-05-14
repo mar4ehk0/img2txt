@@ -7,10 +7,8 @@ use App\Entity\Image;
 use App\Entity\Text;
 use App\Exception\ImageProcessingException;
 use App\Repository\TextRepository;
-use DateTimeImmutable;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Uid\Factory\UlidFactory;
-use Throwable;
 
 class OCRService
 {
@@ -26,7 +24,7 @@ class OCRService
     {
         try {
             $content = $this->httpClient->request($image->getPath());
-        } catch (Throwable $exception) {
+        } catch (\Throwable $exception) {
             $this->logger->error('Error while executing OCR request:'.$exception->getMessage(), [
                 'image_path' => $image->getPath(),
                 'exception' => $exception,
@@ -35,13 +33,11 @@ class OCRService
         }
 
         $id = $this->ulidFactory->create();
-        $now = new DateTimeImmutable();
+        $now = new \DateTimeImmutable();
 
         $text = new Text($id, $content, $image, $now, $now);
         $this->repository->add($text);
 
         return $text;
     }
-
-
 }

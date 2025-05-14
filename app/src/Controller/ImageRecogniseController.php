@@ -11,14 +11,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Throwable;
 
 class ImageRecogniseController extends BaseController
 {
-
     public function __construct(
         private readonly TextRecognizer $recognizer,
-        private readonly LoggerInterface $logger
+        private readonly LoggerInterface $logger,
     ) {
     }
 
@@ -38,7 +36,7 @@ class ImageRecogniseController extends BaseController
         } catch (IAMTokenException $exception) {
             $result = ['error' => true, 'msg' => 'написать свой текст'];
             $code = Response::HTTP_INTERNAL_SERVER_ERROR;
-        } catch (Throwable $exception) {
+        } catch (\Throwable $exception) {
             $this->logger->error($exception->getMessage());
 
             $result = ['error' => true, 'msg' => 'написать свой текст'];

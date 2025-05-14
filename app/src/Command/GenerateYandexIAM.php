@@ -9,12 +9,11 @@ use Jose\Component\KeyManagement\JWKFactory;
 use Jose\Component\Signature\Algorithm\PS256;
 use Jose\Component\Signature\JWSBuilder;
 use Jose\Component\Signature\Serializer\CompactSerializer;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Psr\Log\LoggerInterface;
-
 
 #[AsCommand(name: 'ocr:generate-iam')]
 class GenerateYandexIAM extends Command
@@ -37,8 +36,9 @@ class GenerateYandexIAM extends Command
         try {
             $iamToken = $this->client->request($jwt);
         } catch (YandexIAMClientException $e) {
-            $this->logger->error('Error when requesting an IAM token: ' . $e->getMessage());
+            $this->logger->error('Error when requesting an IAM token: '.$e->getMessage());
             $output->writeln('<error>Failed to get the IAM token</error>');
+
             return Command::FAILURE;
         }
 
@@ -46,13 +46,13 @@ class GenerateYandexIAM extends Command
             $this->pathToIAMFile,
             json_encode(['IAMToken' => $iamToken], JSON_PRETTY_PRINT)
         );
-        if ($result === false) {
-            $this->logger->error('Failed to save the IAM token to a file:' . $this->pathToIAMFile);
+        if (false === $result) {
+            $this->logger->error('Failed to save the IAM token to a file:'.$this->pathToIAMFile);
             throw YandexIAMClientException::failedToWriteIAMFile($this->pathToIAMFile);
         }
 
-
         $output->writeln('Generated Token');
+
         return Command::SUCCESS;
     }
 
@@ -63,7 +63,7 @@ class GenerateYandexIAM extends Command
         $keyId = $keyData['id'];
         $serviceAccountId = $keyData['service_account_id'];
 
-        if (strpos($privateKeyPem, "PLEASE DO NOT REMOVE THIS LINE!") === 0) {
+        if (0 === strpos($privateKeyPem, 'PLEASE DO NOT REMOVE THIS LINE!')) {
             $privateKeyPem = substr($privateKeyPem, strpos($privateKeyPem, "\n") + 1);
         }
 
@@ -99,5 +99,3 @@ class GenerateYandexIAM extends Command
         return $serializer->serialize($jws, 0);
     }
 }
-
-

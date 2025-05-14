@@ -4,18 +4,17 @@ namespace App\Provider;
 
 use App\Exception\YandexIAMClientException;
 use App\Interface\TokenFileProviderInterface;
-use JsonException;
 
 class IAMTokenFileProvider implements TokenFileProviderInterface
 {
     public function __construct(
-        private string $pathToIAMFile
+        private string $pathToIAMFile,
     ) {
     }
 
     /**
      * @throws YandexIAMClientException
-     * @throws JsonException
+     * @throws \JsonException
      */
     public function getToken(): string
     {

@@ -2,9 +2,7 @@
 
 namespace App\Exception;
 
-use Exception;
-
-final class UploadFileException extends Exception
+final class UploadFileException extends \Exception
 {
     private function __construct(string $message)
     {
@@ -14,6 +12,7 @@ final class UploadFileException extends Exception
     public static function createMoveUpload(string $filePath, string $newFilePath): UploadFileException
     {
         $msg = 'Can not move file: %s to new path %s';
+
         return new self(sprintf($msg, $filePath, $newFilePath));
     }
 

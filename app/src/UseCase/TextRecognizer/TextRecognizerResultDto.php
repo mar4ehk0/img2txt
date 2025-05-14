@@ -9,7 +9,7 @@ readonly class TextRecognizerResultDto
     public function __construct(
         public Ulid $imageId,
         public Ulid $textId,
-        public string $text
+        public string $text,
     ) {
     }
 }

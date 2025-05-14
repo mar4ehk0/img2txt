@@ -2,9 +2,7 @@
 
 namespace App\Exception;
 
-use Exception;
-
-final class YandexOCRHttpClientException extends Exception
+final class YandexOCRHttpClientException extends \Exception
 {
     private function __construct(string $message)
     {
@@ -20,7 +18,6 @@ final class YandexOCRHttpClientException extends Exception
     {
         return new self("Expected an array at: '$path' in OCR response.");
     }
-
 
     public static function missingLines(int $blockIndex): self
     {

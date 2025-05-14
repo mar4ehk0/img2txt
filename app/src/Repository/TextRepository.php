@@ -32,5 +32,4 @@ class TextRepository
             ->getQuery()
             ->getResult();
     }
-
 }

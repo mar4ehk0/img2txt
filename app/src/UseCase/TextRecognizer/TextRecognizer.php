@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class TextRecognizer
 {
     public function __construct(
-        private ImageService  $imageService,
+        private ImageService $imageService,
         private OCRService $ocrService,
         private EntityManagerInterface $entityManager,
     ) {

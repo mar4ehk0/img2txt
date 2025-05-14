@@ -2,9 +2,7 @@
 
 namespace App\Exception;
 
-use Exception;
-
-final class YandexIAMClientException extends Exception
+final class YandexIAMClientException extends \Exception
 {
     private function __construct(string $message)
     {

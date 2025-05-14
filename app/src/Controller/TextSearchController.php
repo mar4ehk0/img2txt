@@ -11,9 +11,6 @@ class TextSearchController extends BaseController
     #[Route('/text-search', name: 'text_search', methods: ['POST'])]
     public function __invoke(Request $request): JsonResponse
     {
-
-
-
         return new JsonResponse([]);
     }
 }

@@ -5,18 +5,15 @@ namespace App\Client;
 use App\Exception\YandexOCRHttpClientException;
 use App\Interface\TokenFileProviderInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-use Throwable;
-
 
 class YandexOCRHTTPClient
 {
     public function __construct(
         private HttpClientInterface $client,
         private TokenFileProviderInterface $IAMTokenProvider,
-        private string $urlYandexOCR
+        private string $urlYandexOCR,
     ) {
     }
-
 
     public function request(string $imagePath): ?string
     {
@@ -31,10 +28,10 @@ class YandexOCRHTTPClient
                         'Authorization' => 'Bearer '.$IAMToken,
                     ],
                     'body' => json_encode([
-                        "mimeType" => "JPEG",
-                        "languageCodes" => ["*"],
-                        "model" => "page",
-                        "content" => base64_encode(file_get_contents($imagePath)),
+                        'mimeType' => 'JPEG',
+                        'languageCodes' => ['*'],
+                        'model' => 'page',
+                        'content' => base64_encode(file_get_contents($imagePath)),
                     ]),
                 ]
             );
@@ -43,7 +40,7 @@ class YandexOCRHTTPClient
             $content = json_decode($content, true);
 
             $result = $this->contentProcessing($content);
-        } catch (Throwable $e) {
+        } catch (\Throwable $e) {
             throw $e;
         }
 
@@ -63,9 +60,9 @@ class YandexOCRHTTPClient
 
             foreach ($block['lines'] as $lineIndex => $line) {
                 if (
-                    !isset($line['text']) ||
-                    !is_string($line['text']) ||
-                    empty(trim($line['text']))
+                    !isset($line['text'])
+                    || !is_string($line['text'])
+                    || empty(trim($line['text']))
                 ) {
                     throw YandexOCRHttpClientException::missingAlternativeText($blockIndex, $lineIndex);
                 }
@@ -73,7 +70,6 @@ class YandexOCRHTTPClient
                 $texts[] = trim($line['text']);
             }
         }
-
 
         $resultText = implode(' ', $texts);
 
@@ -98,6 +94,4 @@ class YandexOCRHTTPClient
             throw YandexOCRHttpClientException::notArray('result.textAnnotation.blocks');
         }
     }
-
 }
-
