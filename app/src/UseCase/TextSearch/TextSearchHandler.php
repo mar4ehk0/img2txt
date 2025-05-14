@@ -3,6 +3,7 @@
 namespace App\UseCase\TextSearch;
 
 use App\Repository\TextRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class TextSearchHandler
 {
@@ -11,12 +12,12 @@ class TextSearchHandler
     ) {
     }
 
-    public function handle(TextSearchEntryDto $dto): void
+    public function handle(TextSearchEntryDto $dto): TextResultDto
     {
-        $this->textRepository->search($dto->value); // должен вернуть коллекцию Text
+        $texts = new ArrayCollection($this->textRepository->search($dto->value)); // должен вернуть коллекцию Text
 
-        $dto->value;
+        $dto = new TextResultDto($texts);
 
-        // должен создать ResultDto которая содержит коллекцию
+        return $dto;
     }
 }

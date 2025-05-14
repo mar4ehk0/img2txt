@@ -10,6 +10,7 @@ use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Throwable;
 
 
 class YandexIAMHTTPClient
@@ -43,13 +44,7 @@ class YandexIAMHTTPClient
             if (empty($content['iamToken'])) {
                 throw IamTokenException::tokenNotFound();
             }
-        }catch (TransportExceptionInterface |
-        ClientExceptionInterface |
-        ServerExceptionInterface |
-        RedirectionExceptionInterface |
-        JsonException |
-        \Throwable $e){
-            // оставить только Throwable
+        }catch (Throwable $e){
             throw YandexIAMClientException::requestFailed($e->getMessage());
         }
         return $content['iamToken'];

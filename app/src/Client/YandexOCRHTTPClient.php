@@ -2,10 +2,8 @@
 
 namespace App\Client;
 
-use App\Exception\YandexIAMClientException;
 use App\Exception\YandexOCRHttpClientException;
 use App\Interface\TokenFileProviderInterface;
-use JsonException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Throwable;
 
@@ -16,8 +14,7 @@ class YandexOCRHTTPClient
         private HttpClientInterface $client,
         private TokenFileProviderInterface $IAMTokenProvider,
         private string $urlYandexOCR
-    )
-    {
+    ) {
     }
 
 
@@ -57,14 +54,7 @@ class YandexOCRHTTPClient
     {
         $texts = [];
 
-        // TODO - переписать вынести в метод validateContent,
-        // сделать проверку каждого элемента isset($content['result'])
-        if (
-            !isset($content['result']['textAnnotation']['blocks']) ||
-            !is_array($content['result']['textAnnotation']['blocks'])
-        ) {
-            throw YandexOCRHttpClientException::missingBlocks();
-        }
+        $this->validateContent($content);
 
         foreach ($content['result']['textAnnotation']['blocks'] as $blockIndex => $block) {
             if (!isset($block['lines']) || !is_array($block['lines'])) {
@@ -85,10 +75,29 @@ class YandexOCRHTTPClient
         }
 
 
-
         $resultText = implode(' ', $texts);
 
         return $resultText;
     }
+
+    private function validateContent(array $content): void
+    {
+        if (!isset($content['result'])) {
+            throw YandexOCRHttpClientException::missingKey('result');
+        }
+
+        if (!isset($content['result']['textAnnotation'])) {
+            throw YandexOCRHttpClientException::missingKey('result.textAnnotation');
+        }
+
+        if (!isset($content['result']['textAnnotation']['blocks'])) {
+            throw YandexOCRHttpClientException::missingKey('result.textAnnotation.blocks');
+        }
+
+        if (!is_array($content['result']['textAnnotation']['blocks'])) {
+            throw YandexOCRHttpClientException::notArray('result.textAnnotation.blocks');
+        }
+    }
+
 }
 
