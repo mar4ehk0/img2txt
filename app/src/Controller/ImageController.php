@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\UseCase\TextRecognizer;
+use App\UseCase\TextRecognizer\TextRecognizer;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;

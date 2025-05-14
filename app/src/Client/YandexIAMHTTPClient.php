@@ -4,10 +4,6 @@ namespace App\Client;
 
 use App\Exception\IAMTokenException;
 use App\Exception\YandexIAMClientException;
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class YandexIAMHTTPClient
@@ -40,12 +36,7 @@ class YandexIAMHTTPClient
             if (empty($content['iamToken'])) {
                 throw IAMTokenException::tokenNotFound();
             }
-        } catch (TransportExceptionInterface|
-        ClientExceptionInterface|
-        ServerExceptionInterface|
-        RedirectionExceptionInterface|
-        \JsonException|
-        \Throwable $e) {
+        } catch (\Throwable $e) {
             throw YandexIAMClientException::requestFailed($e->getMessage());
         }
 

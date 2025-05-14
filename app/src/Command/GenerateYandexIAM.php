@@ -42,11 +42,12 @@ class GenerateYandexIAM extends Command
             return Command::FAILURE;
         }
 
-        if (false === file_put_contents(
+        $result = file_put_contents(
             $this->pathToIAMFile,
             json_encode(['IAMToken' => $iamToken], JSON_PRETTY_PRINT)
-        )) {
-            $this->logger->error('Не удалось сохранить IAM токен в файл: '.$this->pathToIAMFile);
+        );
+        if (false === $result) {
+            $this->logger->error('Failed to save the IAM token to a file:'.$this->pathToIAMFile);
             throw YandexIAMClientException::failedToWriteIAMFile($this->pathToIAMFile);
         }
 
