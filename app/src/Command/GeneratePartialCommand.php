@@ -31,7 +31,7 @@ class GeneratePartialCommand extends Command
         $this
             ->setDescription('Генерация данных одним потоком')
             ->addOption('offset', null, InputOption::VALUE_REQUIRED, 'Смещение (offset) начала генерации', 0)
-            ->addOption('limit', null, InputOption::VALUE_REQUIRED, 'Количество записей для генерации', 100000);
+            ->addOption('limit', null, InputOption::VALUE_REQUIRED, 'Количество записей для генерации', 10000);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -50,18 +50,18 @@ class GeneratePartialCommand extends Command
         $output->writeln("Генерация $limit записей с offset = $offset...");
 
         for ($i = $offset; $i < $offset + $limit; ++$i) {
-            $idImage = $this->ulidFactory->create();
+            $imageId = $this->ulidFactory->create();
             $image = new Image(
-                $idImage,
-                $idImage->toString(),
+                $imageId,
+                $imageId->toString(),
                 $baseImagePath,
                 $now,
                 $now
             );
 
-            $idText = $this->ulidFactory->create();
+            $textId = $this->ulidFactory->create();
             $text = new Text(
-                $idText,
+                $textId,
                 $faker->realText($faker->numberBetween(50, 500)),
                 $image,
                 $now,
@@ -82,7 +82,7 @@ class GeneratePartialCommand extends Command
         $this->em->flush();
         $this->em->clear();
 
-        $output->writeln("Блок с offset=$offset завершён");
+        $output->writeln(sprintf('Блок с offset=%d завершён', $offset));
 
         return Command::SUCCESS;
     }

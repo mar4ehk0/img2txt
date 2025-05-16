@@ -15,8 +15,8 @@ class GenerateParallelCommand extends Command
     {
         $this
             ->setDescription('Генерация данных в несколько потоков')
-            ->addOption('total', null, InputOption::VALUE_OPTIONAL, 'Сколько всего записей генерировать', 3000000)
-            ->addOption('chunk', null, InputOption::VALUE_OPTIONAL, 'Размер одного чанка', 50000)
+            ->addOption('total', null, InputOption::VALUE_OPTIONAL, 'Сколько всего записей генерировать', 10000)
+            ->addOption('chunk', null, InputOption::VALUE_OPTIONAL, 'Размер одного чанка', 5000)
             ->addOption('parallel', null, InputOption::VALUE_OPTIONAL, 'Количество параллельных процессов', 1)
             ->addOption('console-bin', null, InputOption::VALUE_OPTIONAL, 'Путь до bin/console', './bin/console');
     }

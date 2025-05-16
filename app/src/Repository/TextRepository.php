@@ -33,8 +33,8 @@ class TextRepository
             ->setParameter('value', '%'.mb_strtolower(trim($value)).'%')
             ->getQuery()
             ->getResult();
-        $end = microtime(true);
 
+        //        $end = microtime(true);
         //        $duration = $end - $start;
         //        echo sprintf("Время выполнения поиска: %.4f секунд\n", $duration);
 
