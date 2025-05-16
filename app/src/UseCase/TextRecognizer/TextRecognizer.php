@@ -6,6 +6,7 @@ use App\Exception\UploadFileException;
 use App\Service\ImageService;
 use App\Service\OCRService;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class TextRecognizer
@@ -14,6 +15,7 @@ class TextRecognizer
         private ImageService $imageService,
         private OCRService $ocrService,
         private EntityManagerInterface $entityManager,
+        private LoggerInterface $logger,
     ) {
     }
 
@@ -24,7 +26,12 @@ class TextRecognizer
 
             $text = $this->ocrService->recognize($image);
         } catch (UploadFileException $e) {
-            // залогировать ошибку и выкинуть исключение
+            $this->logger->error('Error when uploading a file: '.$e->getMessage(), [
+                'exception' => $e,
+                'file_name' => $file->getClientOriginalName(),
+                'mime_type' => $file->getMimeType(),
+            ]);
+            throw $e;
         }
 
         $dto = new TextRecognizerResultDto(

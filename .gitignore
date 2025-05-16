@@ -6,6 +6,8 @@
 /app/config/yandex_ocr/iam_token.json
 /app/public/file_storage
 
+backup.sql
+
 docker/.env
 
 # ide

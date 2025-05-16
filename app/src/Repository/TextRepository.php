@@ -15,21 +15,29 @@ class TextRepository
         $this->repo = $this->entityManager->getRepository(Text::class);
     }
 
-    public function add(Text $image): void
+    public function add(Text $text): void
     {
-        $this->entityManager->persist($image);
+        $this->entityManager->persist($text);
     }
 
-    public function search(string $value)
+    public function search(string $value): array
     {
-        // 1 создать запрос через LIKE
-        // 2 добавь в бд 3 млн записи TEXT // напиши комманду которая добавляет в Text
-        // 3 замерить поиск через LIKE с таблице в 3 млн записей
+        // поиск по "вошел" 10.7332 с
+        // поиск по "Как не быть" 11.5323 С
+        // поиск по "После обеда" 11.9630 С
 
-        return $this->repo->createQueryBuilder('t')
+        //        $start = microtime(true);
+
+        $result = $this->repo->createQueryBuilder('t')
             ->where('LOWER(t.text) LIKE :value')
-            ->setParameter('value', '%'.$value.'%')
+            ->setParameter('value', '%'.mb_strtolower(trim($value)).'%')
             ->getQuery()
             ->getResult();
+
+        //        $end = microtime(true);
+        //        $duration = $end - $start;
+        //        echo sprintf("Время выполнения поиска: %.4f секунд\n", $duration);
+
+        return $result;
     }
 }
