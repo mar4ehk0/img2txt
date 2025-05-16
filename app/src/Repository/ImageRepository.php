@@ -19,4 +19,9 @@ class ImageRepository
     {
         $this->entityManager->persist($image);
     }
+
+    public function getById(string $id): ?Image
+    {
+        return $this->repo->find($id);
+    }
 }

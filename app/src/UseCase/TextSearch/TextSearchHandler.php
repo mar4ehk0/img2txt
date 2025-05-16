@@ -14,7 +14,7 @@ class TextSearchHandler
 
     public function handle(TextSearchEntryDto $dto): TextResultDto
     {
-        $texts = new ArrayCollection($this->textRepository->search($dto->value)); // должен вернуть коллекцию Text
+        $texts = new ArrayCollection($this->textRepository->search($dto->value));
 
         $dto = new TextResultDto($texts);
 

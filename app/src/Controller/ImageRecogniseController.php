@@ -3,6 +3,10 @@
 namespace App\Controller;
 
 use App\Exception\IAMTokenException;
+use App\Exception\ImageProcessingException;
+use App\Exception\UploadFileException;
+use App\Exception\YandexIAMClientException;
+use App\Exception\YandexOCRHttpClientException;
 use App\UseCase\TextRecognizer\TextRecognizer;
 use App\View\ImageRecogniseUploadView;
 use Psr\Log\LoggerInterface;
@@ -27,19 +31,24 @@ class ImageRecogniseController extends BaseController
         $uploadedFile = $request->files->get('image');
         try {
             $dto = $this->recognizer->handle($uploadedFile);
-
             $view = new ImageRecogniseUploadView($dto);
-
             $result = $view->getView();
-
             $code = Response::HTTP_OK;
-        } catch (IAMTokenException $exception) {
-            $result = ['error' => true, 'msg' => 'написать свой текст'];
-            $code = Response::HTTP_INTERNAL_SERVER_ERROR;
+        } catch (IAMTokenException|YandexIAMClientException $exception) {
+            $this->logger->error($exception->getMessage());
+            $result = ['error' => true, 'msg' => 'Ошибка при доступе к внешнему сервису. Попробуйте позже.'];
+            $code = Response::HTTP_BAD_GATEWAY;
+        } catch (YandexOCRHttpClientException|ImageProcessingException $exception) {
+            $this->logger->error($exception->getMessage());
+            $result = ['error' => true, 'msg' => 'Не удалось распознать изображение. Попробуйте другое.'];
+            $code = Response::HTTP_UNPROCESSABLE_ENTITY;
+        } catch (UploadFileException $exception) {
+            $this->logger->error($exception->getMessage());
+            $result = ['error' => true, 'msg' => 'Файл не был загружен. Проверьте его формат и повторите попытку.'];
+            $code = Response::HTTP_BAD_REQUEST;
         } catch (\Throwable $exception) {
             $this->logger->error($exception->getMessage());
-
-            $result = ['error' => true, 'msg' => 'написать свой текст'];
+            $result = ['error' => true, 'msg' => 'Произошла ошибка на сервере. Пожалуйста, попробуйте позже.'];
             $code = Response::HTTP_INTERNAL_SERVER_ERROR;
         }
 
