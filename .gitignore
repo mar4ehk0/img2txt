@@ -5,6 +5,8 @@
 /app/config/yandex_ocr/authorized_key.json
 /app/config/yandex_ocr/iam_token.json
 /app/public/file_storage
+/app/bin/*
+!/app/bin/console
 
 backup.sql
 
