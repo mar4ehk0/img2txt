@@ -3,7 +3,6 @@ FROM php:8.3-fpm
 ARG UID
 ARG GID
 ARG USER_NAME
-ARG SRC_PATH
 
 RUN set -eux; \
     apt-get update; \
@@ -43,11 +42,11 @@ RUN set -eux; \
     pecl install xdebug-3.3.2 && docker-php-ext-enable xdebug; \
     # Create user for container
     touch /run/php-fpm.pid \
-    && groupadd -g ${UID} ${USER_NAME} \
-    && useradd -u ${GID} -ms /bin/bash -g ${USER_NAME} ${USER_NAME} \
+    && groupadd -g ${GID} ${USER_NAME} \
+    && useradd -u ${UID} -ms /bin/bash -g ${USER_NAME} ${USER_NAME} \
     && chown ${USER_NAME}:${USER_NAME} /run/php-fpm.pid
 
 USER ${USER_NAME}
 
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.2.6 /usr/bin/composer /usr/bin/composer
 
