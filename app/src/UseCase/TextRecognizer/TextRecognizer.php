@@ -26,7 +26,7 @@ class TextRecognizer
 
             $text = $this->ocrService->recognize($image);
         } catch (UploadFileException $e) {
-            $this->logger->error('Error when uploading a file: '.$e->getMessage(), [
+            $this->logger->error('Error when uploading a file: ' . $e->getMessage(), [
                 'exception' => $e,
                 'file_name' => $file->getClientOriginalName(),
                 'mime_type' => $file->getMimeType(),

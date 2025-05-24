@@ -25,11 +25,11 @@ class OCRService
         try {
             $content = $this->httpClient->request($image->getPath());
         } catch (\Throwable $exception) {
-            $this->logger->error('Error while executing OCR request:'.$exception->getMessage(), [
+            $this->logger->error('Error while executing OCR request:' . $exception->getMessage(), [
                 'image_path' => $image->getPath(),
                 'exception' => $exception,
             ]);
-            throw new ImageProcessingException('Failed to process the image: '.$image->getPath(), previous: $exception);
+            throw new ImageProcessingException('Failed to process the image: ' . $image->getPath(), previous: $exception);
         }
 
         $id = $this->ulidFactory->create();

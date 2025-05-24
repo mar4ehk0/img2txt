@@ -33,7 +33,7 @@ class TextRepository
 
         $result = $this->repo->createQueryBuilder('t')
             ->where('LOWER(t.text) LIKE :value')
-            ->setParameter('value', '%'.mb_strtolower(trim($value)).'%')
+            ->setParameter('value', '%' . mb_strtolower(trim($value)) . '%')
             ->getQuery()
             ->getResult();
 
