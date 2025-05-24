@@ -36,7 +36,7 @@ class GenerateYandexIAM extends Command
         try {
             $iamToken = $this->client->request($jwt);
         } catch (YandexIAMClientException $e) {
-            $this->logger->error('Error when requesting an IAM token: '.$e->getMessage());
+            $this->logger->error('Error when requesting an IAM token: ' . $e->getMessage());
             $output->writeln('<error>Failed to get the IAM token</error>');
 
             return Command::FAILURE;
@@ -47,7 +47,7 @@ class GenerateYandexIAM extends Command
             json_encode(['IAMToken' => $iamToken], JSON_PRETTY_PRINT)
         );
         if (false === $result) {
-            $this->logger->error('Failed to save the IAM token to a file:'.$this->pathToIAMFile);
+            $this->logger->error('Failed to save the IAM token to a file:' . $this->pathToIAMFile);
             throw YandexIAMClientException::failedToWriteIAMFile($this->pathToIAMFile);
         }
 

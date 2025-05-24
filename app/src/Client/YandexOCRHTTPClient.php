@@ -25,7 +25,7 @@ class YandexOCRHTTPClient
                 [
                     'headers' => [
                         'Content-Type' => 'application/json',
-                        'Authorization' => 'Bearer '.$IAMToken,
+                        'Authorization' => 'Bearer ' . $IAMToken,
                     ],
                     'body' => json_encode([
                         'mimeType' => 'JPEG',
