@@ -50,7 +50,7 @@ class ImageService
     private function createFilePath(string $newFileName, string $extension): string
     {
         $datePath = date('Y/m/d');
-        $fullPath = rtrim($this->fileStorage, '/').'/'.$datePath;
+        $fullPath = rtrim($this->fileStorage, '/') . '/' . $datePath;
 
         if (!is_dir($fullPath)) {
             if (!mkdir($fullPath, 0777, true) && !is_dir($fullPath)) {
