@@ -15,8 +15,8 @@ class TextSearchHandler
     {
         $texts = $this->textRepository->search($dto->value);
 
-        $dto = new TextSearchResultDto($texts);
+        $result = new TextSearchResultDto($texts);
 
-        return $dto;
+        return $result;
     }
 }

@@ -20,6 +20,9 @@ class TextRepository
         $this->entityManager->persist($text);
     }
 
+    /**
+     * @return Text[]
+     */
     public function search(string $value): array
     {
         // поиск по "вошел" 10.7332 с

@@ -33,7 +33,7 @@ start_development: ## Start development containers
 
 .PHONY: stop_development
 stop_development: ## Stop development containers
-	${DOCKER_COMPOSE} down --remove-orphans
+	${DOCKER_COMPOSE} down --remove-orphans -v
 
 .PHONY: docker_compose_up_development
 docker_compose_up_development:
@@ -81,6 +81,30 @@ cs-check: ## Checks Code Style PHP
 .PHONY: cs-fix
 cs-fix: ## Fixes Code Style PHP
 	docker exec -ti ${APP_CONTAINER_NAME} php ./vendor/bin/php-cs-fixer fix --diff
+
+.PHONY: composer
+composer: ## Run composer inside container
+	docker exec -ti ${APP_CONTAINER_NAME} composer --version
+
+.PHONY: composer_root
+composer_root: ## Run composer as root
+	docker exec -ti --user root ${APP_CONTAINER_NAME} composer --version
+
+.PHONY: composer-install
+composer-install: ## Install dependencies via composer
+	docker exec -ti ${APP_CONTAINER_NAME} composer install --no-interaction -vvv
+
+.PHONY: test-network
+test-network: ## Check network connectivity inside container
+	docker exec -ti ${APP_CONTAINER_NAME} curl -I https://repo.packagist.org
+
+.PHONY: check-permissions
+check-permissions:
+	docker exec -ti ${APP_CONTAINER_NAME} ls -la /app ~/.composer
+
+.PHONY: composer-clear
+composer-clear:
+	docker exec -ti ${APP_CONTAINER_NAME} composer clear-cache
 
 # Global
 .DEFAULT_GOAL := help

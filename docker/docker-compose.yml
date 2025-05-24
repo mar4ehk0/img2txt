@@ -21,6 +21,7 @@ services:
             RDMS_DB_NAME: ${RDMS_DB_NAME}
             RDMS_DB_PASSWORD: ${RDMS_DB_PASSWORD}
             RDMS_DB_USER: ${RDMS_DB_USER}
+            PHP_IDE_CONFIG: serverName=${IDE_SERVER_NAME}
         extra_hosts:
             - "host.docker.internal:host-gateway"
         depends_on:
