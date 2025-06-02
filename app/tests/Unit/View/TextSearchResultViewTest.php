@@ -14,7 +14,9 @@ use Symfony\Component\Uid\Factory\UlidFactory;
 class TextSearchResultViewTest extends TestCase
 {
 
-    #[DataProvider('dataProviderSomeRender')]
+    /**
+     * @dataProvider dataProviderSomeRender
+     */
     public function testSomeRender(array $data, array $expected): void
     {
         // arrange
@@ -34,7 +36,7 @@ class TextSearchResultViewTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
-    public static function dataProviderSomeRender(): array
+    private function dataProviderSomeRender(): array
     {
         $ulidFactory = new UlidFactory();
 

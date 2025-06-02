@@ -11,8 +11,9 @@ use Symfony\Component\Uid\Ulid;
 
 class ImageRecogniseUploadViewTest extends TestCase
 {
-
-    #[DataProvider('dataProviderSomeRender')]
+    /**
+     * @dataProvider dataProviderSomeRender
+     */
     public function testSomeRender(Ulid $imageId, Ulid $textId, string $text, array $expected): void
     {
         $dto = new TextRecognizerResultDto($imageId, $textId, $text);
@@ -23,7 +24,7 @@ class ImageRecogniseUploadViewTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
-    public static function dataProviderSomeRender(): array
+    private function dataProviderSomeRender(): array
     {
         $ulidFactory = new UlidFactory();
 
