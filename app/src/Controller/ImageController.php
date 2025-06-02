@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\UseCase\TextRecognizer\TextRecognizer;
+use App\UseCase\TextRecognizer\TextRecognizerHandler;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class ImageController extends BaseController
 {
     public function __construct(
-        private readonly TextRecognizer $recognizer,
+        private readonly TextRecognizerHandler $recognizer,
         private readonly LoggerInterface $logger,
     ) {
     }

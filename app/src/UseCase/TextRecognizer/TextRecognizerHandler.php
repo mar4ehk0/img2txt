@@ -9,7 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class TextRecognizer
+class TextRecognizerHandler
 {
     public function __construct(
         private ImageService $imageService,
