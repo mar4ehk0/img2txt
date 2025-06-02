@@ -7,7 +7,7 @@ use App\Exception\ImageProcessingException;
 use App\Exception\UploadFileException;
 use App\Exception\YandexIAMClientException;
 use App\Exception\YandexOCRHttpClientException;
-use App\UseCase\TextRecognizer\TextRecognizer;
+use App\UseCase\TextRecognizer\TextRecognizerHandler;
 use App\View\ImageRecogniseUploadView;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class ImageRecogniseController extends BaseController
 {
     public function __construct(
-        private readonly TextRecognizer $recognizer,
+        private readonly TextRecognizerHandler $recognizer,
         private readonly LoggerInterface $logger,
     ) {
     }

@@ -15,7 +15,7 @@ class YandexOCRHTTPClient
     ) {
     }
 
-    public function request(string $imagePath): ?string
+    public function request(string $imagePath): string
     {
         try {
             $IAMToken = $this->IAMTokenProvider->getToken();
