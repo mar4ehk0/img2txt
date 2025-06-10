@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
@@ -21,6 +23,11 @@ class Image
     private string $name;
     #[ORM\Column(type: 'string')]
     private string $path;
+
+    #[ManyToOne(targetEntity: User::class, inversedBy: 'images')]
+    #[JoinColumn(name: 'creator', referencedColumnName: 'id', nullable: false)]
+    private User $user;
+
     #[ORM\Column(type: 'datetime_immutable')]
     private \DateTimeImmutable $createdAt;
     #[ORM\Column(type: 'datetime_immutable')]
