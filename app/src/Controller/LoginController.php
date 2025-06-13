@@ -10,21 +10,26 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class LoginController extends BaseController
 {
-    #[Route('/login', name: 'app_login')]
+    public function __construct(
+        private JwtTokenValidator $jwtTokenValidator,
+        private Request $request,
+    ) {
+    }
+
+    #[Route('/login', name: 'app_login', methods: ['GET'])]
     public function login(): Response
     {
         return $this->render('login/login.html.twig');
     }
 
-    #[Route('/check-token', name: 'app_check_token')]
-    public function checkToken(Request $request, JwtTokenValidator $validator): JsonResponse
+    #[Route('/check-token', name: 'app_check_token', methods: ['GET'])]
+    public function checkToken(): JsonResponse
     {
-        $authHeader = $request->headers->get('Authorization');
-        $user = $validator->validateToken($authHeader);
-        if (!$user) {
-            return $this->redirectToRoute('app_register');
-        }
+        $authHeader = $this->request->headers->get('Authorization');
+        $user = $this->jwtTokenValidator->validateToken($authHeader);
 
-        return new JsonResponse('Login success');
+        return new JsonResponse([
+            'message' => 'Login Successful',
+        ]);
     }
 }

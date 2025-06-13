@@ -25,7 +25,7 @@ class Image
     private string $path;
 
     #[ManyToOne(targetEntity: User::class, inversedBy: 'images')]
-    #[JoinColumn(name: 'creator', referencedColumnName: 'id', nullable: false)]
+    #[JoinColumn(name: 'creator', referencedColumnName: 'id', nullable: true)]
     private User $user;
 
     #[ORM\Column(type: 'datetime_immutable')]
@@ -37,12 +37,14 @@ class Image
         Ulid $id,
         string $name,
         string $path,
+        User $user,
         \DateTimeImmutable $createdAt,
         \DateTimeImmutable $updatedAt,
     ) {
         $this->id = $id;
         $this->name = $name;
         $this->path = $path;
+        $this->user = $user;
         $this->createdAt = $createdAt;
         $this->updatedAt = $updatedAt;
     }
