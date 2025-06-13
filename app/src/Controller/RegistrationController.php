@@ -13,16 +13,15 @@ class RegistrationController extends BaseController
 {
     public function __construct(
         private RegistrationHandler $handler,
-        private Request $request,
     ) {
     }
 
     #[Route('/register', name: 'app_register', methods: ['GET', 'POST'])]
-    public function register(): Response
+    public function register(Request $request): Response
     {
         $formData = new RegisterUserDto();
         $form = $this->createForm(RegistrationFormType::class, $formData);
-        $form->handleRequest($this->request);
+        $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->handler->handle($formData);

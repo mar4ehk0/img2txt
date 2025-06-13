@@ -12,7 +12,6 @@ final class LoginController extends BaseController
 {
     public function __construct(
         private JwtTokenValidator $jwtTokenValidator,
-        private Request $request,
     ) {
     }
 
@@ -23,9 +22,9 @@ final class LoginController extends BaseController
     }
 
     #[Route('/check-token', name: 'app_check_token', methods: ['GET'])]
-    public function checkToken(): JsonResponse
+    public function checkToken(Request $request): JsonResponse
     {
-        $authHeader = $this->request->headers->get('Authorization');
+        $authHeader = $request->headers->get('Authorization');
         $user = $this->jwtTokenValidator->validateToken($authHeader);
 
         return new JsonResponse([
