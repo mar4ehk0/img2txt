@@ -4,7 +4,7 @@ namespace App\UseCase\UserRegistration;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class RegisterUserDto
+readonly class RegisterUserDto
 {
     #[Assert\NotBlank(message: 'Email is required')]
     #[Assert\Email(message: 'Incorrect email address')]
