@@ -13,14 +13,19 @@
     "doctrine/doctrine-bundle": "^2.14",
     "doctrine/doctrine-migrations-bundle": "^3.4.2",
     "doctrine/orm": "^3.3.3",
+    "lexik/jwt-authentication-bundle": "^3.1",
     "symfony/clock": "7.2.*",
     "symfony/console": "7.2.*",
     "symfony/dotenv": "7.2.*",
     "symfony/flex": "^2.6.0",
+    "symfony/form": "7.2.*",
     "symfony/framework-bundle": "7.2.*",
     "symfony/http-client": "7.2.*",
     "symfony/runtime": "7.2.*",
+    "symfony/security-bundle": "7.2.*",
+    "symfony/twig-bundle": "7.2.*",
     "symfony/uid": "7.2.*",
+    "symfony/validator": "7.2.*",
     "symfony/yaml": "7.2.*",
     "web-token/jwt-framework": "^4.0.4"
   },
@@ -82,6 +87,7 @@
     "codeception/module-symfony": "^3.5",
     "fakerphp/faker": "^1.24.1",
     "friendsofphp/php-cs-fixer": "^3.75",
+    "symfony/maker-bundle": "^1.63",
     "symfony/var-dumper": "7.2.*"
   }
 }
